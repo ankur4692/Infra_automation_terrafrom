@@ -100,47 +100,7 @@ resource "aws_security_group" "APWPInnerSg" {
   }
 }
 
-resource "aws_security_group" "SecurityGroupFrPrInstance" {
-  name   = "SgforPrivateSubnetInstance"
-  vpc_id = aws_vpc.VPC.id
 
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 3389
-    to_port     = 3389
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port       = 3306
-    to_port         = 3306
-    protocol        = "tcp"
-    security_groups = [aws_security_group.APWPInnerSg.id]
-  }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
 
 resource "aws_instance" "InstanceforAPWP" {
   ami             = "ami-09d3b3274b6c5d4aa"
@@ -169,31 +129,7 @@ resource "aws_instance" "InstanceforAPWP" {
     "Name" = "Instance for Apache-PHP and Wordpress"
   }
 }
-resource "aws_instance" "InstanceforMySQL" {
-  ami             = "ami-0a91cd140a1fc148a"
-  instance_type   = var.Instance_Type_DB
-  subnet_id       = aws_subnet.Private_Subnet.id
-  key_name        = "Servers"
-  security_groups = [aws_security_group.SecurityGroupFrPrInstance.id]
-  user_data       = <<-EOF
-                    #!/bin/bash
-                    sudo su
-                    sudo apt-get update -y
-                    sudo apt-get install mysql-server -y
-                    sudo apt-get install php libapache2-mod-php php-mysql -y
-                    sudo mysql -u root -pVasanthi@24 -e "CREATE DATABASE WordpressInfo DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
-                    sudo mysql -u root -pVasanthi@24 -e "use WordpressInfo;"
-                    sudo mysql -u root -pVasanthi@24 -e "create user 'vignesh'@'%' identified by 'Vasanthi@24';"
-                    sudo mysql -u root -pVasanthi@24 -e "grant all on WordpressInfo.* to 'vignesh'@'%';"
-                    sudo mysql -u root -pVasanthi@24 -e "GRANT ALL PRIVILEGES ON WordpressInfo.* TO 'vignesh'@'%';"
-                    sudo mysql -u root -pVasanthi@24 -e "FLUSH PRIVILEGES;"
-                    sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mysql/mysql.conf.d/mysqld.cnf
-                    sudo service mysql restart
-                    EOF
-  tags = {
-    "Name" = "Instance for MySQL"
-  }
-}
+
 
 resource "aws_subnet" "Public_Subnet2" {
   cidr_block        = "10.0.3.0/24"
