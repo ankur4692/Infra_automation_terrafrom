@@ -1,10 +1,3 @@
-variable "ACSKEY" {
-  type = string
-}
-
-variable "SKEY" {
-  type = string
-}
 
 variable "Instance_Type_APWP" {
   type = string
