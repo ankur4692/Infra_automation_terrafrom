@@ -218,7 +218,7 @@ resource "aws_instance" "InstanceforMySQL" {
 resource "aws_subnet" "Public_Subnet2" {
   cidr_block        = "10.0.3.0/24"
   vpc_id            = aws_vpc.VPC.id
-  availability_zone = "us-east-1b"
+  availability_zone = "us-east-1a"
   tags = {
     Name = "Extra Public Subnet for LB"
   }
@@ -241,7 +241,7 @@ resource "aws_launch_configuration" "LaunchConfiguration" {
 
 resource "aws_lb_target_group" "TargetGroup" {
   name        = "TgforAPWPASG"
-  target_type = "alb"
+  target_type = "elb"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.VPC.id
