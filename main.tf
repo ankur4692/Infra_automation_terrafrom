@@ -241,7 +241,7 @@ resource "aws_launch_configuration" "LaunchConfiguration" {
 
 resource "aws_lb_target_group" "TargetGroup" {
   name        = "TgforAPWPASG"
-  target_type = "elb"
+  target_type = "alb"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = aws_vpc.VPC.id
