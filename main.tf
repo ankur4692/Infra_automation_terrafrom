@@ -90,7 +90,7 @@ resource "aws_security_group" "APWPInnerSg" {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
-    security_groups = [aws_security_group.LbSecurityGroup.id]
+    security_groups = [aws_security_group.APWPInnerSg.id]
   }
   egress {
     from_port   = 0
