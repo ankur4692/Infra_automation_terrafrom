@@ -79,26 +79,6 @@ resource "aws_route_table_association" "SubnetAssociationFrPRRT" {
   route_table_id = aws_route_table.PrRouteTable.id
 }
 
-resource "aws_security_group" "LbSecurityGroup" {
-  name        = "LoadBalSgforAPWP"
-  description = "Allow all resources through http to load balancer"
-  vpc_id      = aws_vpc.VPC.id
-
-  ingress {
-    description = "Allow all resources through http to load balancer"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
 
 resource "aws_security_group" "APWPInnerSg" {
   name        = "SgforAPWP"
@@ -240,32 +220,5 @@ resource "aws_launch_configuration" "LaunchConfiguration" {
 
 
 
-
-
-resource "aws_cloudwatch_metric_alarm" "CPUAlarmLow" {
-  alarm_name          = "CPUAlarmLowforAPWPASG"
-  comparison_operator = "LessThanThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = "60"
-  statistic           = "Average"
-  threshold           = "70"
-  alarm_description   = "Drop/Terminate an EC2 Instance(APWP) if CPU Utilization < 70"
-  actions_enabled     = "true"
-}
-
-resource "aws_cloudwatch_metric_alarm" "CPUAlarmHigh" {
-  alarm_name          = "CPUAlarmHighforAPWPASG"
-  comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = "60"
-  statistic           = "Average"
-  threshold           = "70"
-  alarm_description   = "Spin up an EC2 Instance(APWP) if CPU Utilization > 70"
-  actions_enabled     = "true"
-}
 
 
