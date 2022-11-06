@@ -239,42 +239,8 @@ resource "aws_launch_configuration" "LaunchConfiguration" {
 }
 
 
-resource "aws_lb_target_group" "TargetGroup" {
-  name        = "TgforAPWPASG"
-  target_type = "alb"
-  port        = 80
-  protocol    = "HTTP"
-  vpc_id      = aws_vpc.VPC.id
-}
 
 
-resource "aws_autoscaling_group" "AutoScalingGroup" {
-  name                      = var.ASGname
-  max_size                  = 3
-  min_size                  = 1
-  health_check_grace_period = 300
-  health_check_type         = "ELB"
-  desired_capacity          = 1
-  launch_configuration      = aws_launch_configuration.LaunchConfiguration.name
-  vpc_zone_identifier       = [aws_subnet.Public_Subnet.id, aws_subnet.Public_Subnet2.id]
-  target_group_arns         = [aws_lb_target_group.TargetGroup.arn]
-}
-
-resource "aws_autoscaling_policy" "ScaleUPPolicy" {
-  name                   = "ScalingPolicyfrAPWPASG"
-  adjustment_type        = "ChangeInCapacity"
-  autoscaling_group_name = aws_autoscaling_group.AutoScalingGroup.name
-  scaling_adjustment     = 1
-  cooldown               = 60
-}
-
-resource "aws_autoscaling_policy" "ScaleDownPolicy" {
-  name                   = "ScalingPolicyfrAPWPASG"
-  adjustment_type        = "ChangeInCapacity"
-  autoscaling_group_name = aws_autoscaling_group.AutoScalingGroup.name
-  scaling_adjustment     = -1
-  cooldown               = 60
-}
 
 resource "aws_cloudwatch_metric_alarm" "CPUAlarmLow" {
   alarm_name          = "CPUAlarmLowforAPWPASG"
@@ -305,26 +271,3 @@ resource "aws_cloudwatch_metric_alarm" "CPUAlarmHigh" {
 }
 
 
-resource "aws_lb" "LoadBalancer" {
-  name               = "LbforAPWPASG"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.LbSecurityGroup.id]
-  subnets            = [aws_subnet.Public_Subnet.id, aws_subnet.Public_Subnet2.id]
-
-  ip_address_type = "ipv4"
-}
-
-resource "aws_lb_listener" "Listener" {
-  load_balancer_arn = aws_lb.LoadBalancer.arn
-  port              = 80
-  protocol          = "HTTP"
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.TargetGroup.arn
-  }
-}
-
-output "Load_Balancer_DNS" {
-  value = aws_lb.LoadBalancer.dns_name
-}
