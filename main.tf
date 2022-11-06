@@ -13,7 +13,7 @@ resource "aws_subnet" "Public_Subnet" {
   cidr_block              = var.CIDR_Pub_Subnet
   vpc_id                  = aws_vpc.VPC.id
   map_public_ip_on_launch = true
-  availability_zone       = "us-east-2a"
+  availability_zone       = "us-east-1a"
   tags = {
     Name = "Public Subnet"
   }
@@ -163,7 +163,7 @@ resource "aws_security_group" "SecurityGroupFrPrInstance" {
 }
 
 resource "aws_instance" "InstanceforAPWP" {
-  ami             = "ami-0a91cd140a1fc148a"
+  ami             = "ami-09d3b3274b6c5d4aa"
   instance_type   = var.Instance_Type_APWP
   subnet_id       = aws_subnet.Public_Subnet.id
   key_name        = "Servers"
@@ -218,7 +218,7 @@ resource "aws_instance" "InstanceforMySQL" {
 resource "aws_subnet" "Public_Subnet2" {
   cidr_block        = "10.0.3.0/24"
   vpc_id            = aws_vpc.VPC.id
-  availability_zone = "us-east-2b"
+  availability_zone = "us-east-1b"
   tags = {
     Name = "Extra Public Subnet for LB"
   }
