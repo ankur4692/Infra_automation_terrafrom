@@ -18,7 +18,3 @@ variable "CIDR_Pub_Subnet" {
 variable "CIDR_Pr_Subnet" {
   type = string
 }
-
-variable "ASGname" {
-  type = string
-}
