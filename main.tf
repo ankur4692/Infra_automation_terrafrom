@@ -1,3 +1,9 @@
+provider "aws" {
+  region     = "us-west-2"
+  access_key = "AKIA5QKJ7BKOIMGXJFS2"
+  secret_key = "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"
+}
+
 resource "aws_vpc" "VPC" {
   cidr_block           = var.vpcCIDR
   enable_dns_hostnames = true
