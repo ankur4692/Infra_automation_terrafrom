@@ -164,7 +164,7 @@ resource "aws_instance" "InstanceforAPWP" {
   ami             = "ami-0a91cd140a1fc148a"
   instance_type   = var.Instance_Type_APWP
   subnet_id       = aws_subnet.Public_Subnet.id
-  key_name        = "First_Instance"
+  key_name        = "Servers"
   security_groups = [aws_security_group.APWPInnerSg.id]
   user_data       = <<-EOF
                     #!/bin/bash
@@ -191,7 +191,7 @@ resource "aws_instance" "InstanceforMySQL" {
   ami             = "ami-0a91cd140a1fc148a"
   instance_type   = var.Instance_Type_DB
   subnet_id       = aws_subnet.Private_Subnet.id
-  key_name        = "First_Instance"
+  key_name        = "Servers"
   security_groups = [aws_security_group.SecurityGroupFrPrInstance.id]
   user_data       = <<-EOF
                     #!/bin/bash
@@ -227,7 +227,7 @@ resource "aws_launch_configuration" "LaunchConfiguration" {
   image_id                    = "ami-03946fd338928596f"
   instance_type               = "t2.micro"
   associate_public_ip_address = true
-  key_name                    = "First_Instance"
+  key_name                    = "Servers"
   security_groups             = [aws_security_group.APWPInnerSg.id]
   user_data                   = <<-EOF
                                 #!/bin/bash
