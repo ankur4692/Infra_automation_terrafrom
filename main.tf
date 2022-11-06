@@ -238,12 +238,15 @@ resource "aws_launch_configuration" "LaunchConfiguration" {
                                 EOF              
 }
 
+
 resource "aws_lb_target_group" "TargetGroup" {
-  name     = "TgforAPWPASG"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.VPC.id
+  name        = "TgforAPWPASG"
+  target_type = "alb"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.VPC.id
 }
+
 
 resource "aws_autoscaling_group" "AutoScalingGroup" {
   name                      = var.ASGname
