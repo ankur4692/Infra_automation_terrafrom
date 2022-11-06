@@ -253,7 +253,6 @@ resource "aws_cloudwatch_metric_alarm" "CPUAlarmLow" {
   threshold           = "70"
   alarm_description   = "Drop/Terminate an EC2 Instance(APWP) if CPU Utilization < 70"
   actions_enabled     = "true"
-  alarm_actions       = [aws_autoscaling_policy.ScaleDownPolicy.arn]
 }
 
 resource "aws_cloudwatch_metric_alarm" "CPUAlarmHigh" {
@@ -267,7 +266,6 @@ resource "aws_cloudwatch_metric_alarm" "CPUAlarmHigh" {
   threshold           = "70"
   alarm_description   = "Spin up an EC2 Instance(APWP) if CPU Utilization > 70"
   actions_enabled     = "true"
-  alarm_actions       = [aws_autoscaling_policy.ScaleUPPolicy.arn]
 }
 
 
